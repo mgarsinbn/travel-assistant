@@ -10,6 +10,10 @@ const auth = require('./auth');
 const app = express();
 app.use(express.json());
 
+// Public assets needed by login page (before auth middleware)
+app.get('/eddie.svg', (req, res) => res.sendFile(path.join(__dirname, '../public/eddie.svg')));
+app.get('/eddie.jpg', (req, res) => res.sendFile(path.join(__dirname, '../public/eddie.jpg')));
+
 // Auth routes (before requireAuth middleware)
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/login.html'));
