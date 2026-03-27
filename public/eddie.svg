@@ -1,89 +1,86 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-  <!-- Background: rich red leather gradient (Delirious vibes) -->
   <defs>
     <radialGradient id="bg" cx="50%" cy="40%" r="60%">
-      <stop offset="0%" stop-color="#cc0000"/>
-      <stop offset="100%" stop-color="#660000"/>
+      <stop offset="0%" stop-color="#2d6b1e"/>
+      <stop offset="100%" stop-color="#1a3d10"/>
     </radialGradient>
     <radialGradient id="skin" cx="50%" cy="45%" r="50%">
       <stop offset="0%" stop-color="#8B6914"/>
       <stop offset="100%" stop-color="#6B4F12"/>
     </radialGradient>
-    <linearGradient id="jacket" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#dd1111"/>
-      <stop offset="50%" stop-color="#aa0000"/>
-      <stop offset="100%" stop-color="#880000"/>
-    </linearGradient>
-    <!-- Leather shine effect -->
-    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
-      <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
-      <stop offset="100%" stop-color="rgba(255,255,255,0.08)"/>
-    </linearGradient>
   </defs>
 
-  <!-- Circular background -->
+  <!-- Jungle green background -->
   <circle cx="100" cy="100" r="100" fill="url(#bg)"/>
 
-  <!-- Red leather jacket / outfit (shoulders and collar) -->
-  <ellipse cx="100" cy="185" rx="75" ry="55" fill="url(#jacket)"/>
-  <!-- Leather shine on jacket -->
-  <ellipse cx="100" cy="185" rx="75" ry="55" fill="url(#shine)"/>
-  <!-- Jacket collar V-neck -->
-  <polygon points="80,145 100,175 120,145" fill="#1a1a1a" opacity="0.9"/>
-  <!-- Collar lapels -->
-  <polygon points="65,140 80,145 85,165 60,155" fill="#cc1111" stroke="#990000" stroke-width="0.5"/>
-  <polygon points="135,140 120,145 115,165 140,155" fill="#cc1111" stroke="#990000" stroke-width="0.5"/>
+  <!-- Big wild bush hair -->
+  <ellipse cx="100" cy="65" rx="65" ry="55" fill="#1a1a1a"/>
+  <ellipse cx="45" cy="70" rx="20" ry="30" fill="#1a1a1a"/>
+  <ellipse cx="155" cy="70" rx="20" ry="30" fill="#1a1a1a"/>
+  <ellipse cx="55" cy="45" rx="18" ry="22" fill="#222"/>
+  <ellipse cx="145" cy="45" rx="18" ry="22" fill="#222"/>
+  <ellipse cx="100" cy="30" rx="35" ry="20" fill="#222"/>
+  <!-- Hair texture tufts -->
+  <ellipse cx="70" cy="35" rx="12" ry="15" fill="#1a1a1a"/>
+  <ellipse cx="130" cy="35" rx="12" ry="15" fill="#1a1a1a"/>
+  <ellipse cx="40" cy="55" rx="10" ry="15" fill="#222"/>
+  <ellipse cx="160" cy="55" rx="10" ry="15" fill="#222"/>
+  <ellipse cx="100" cy="22" rx="20" ry="12" fill="#1a1a1a"/>
 
-  <!-- Head / face circle -->
-  <circle cx="100" cy="85" r="45" fill="url(#skin)"/>
+  <!-- Bone in hair -->
+  <line x1="55" y1="32" x2="145" y2="32" stroke="#f5f0e0" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="55" cy="32" rx="7" ry="5" fill="#f5f0e0"/>
+  <ellipse cx="145" cy="32" rx="7" ry="5" fill="#f5f0e0"/>
 
-  <!-- Hair (jheri curl era - wavy top) -->
-  <ellipse cx="100" cy="52" rx="42" ry="22" fill="#1a1a1a"/>
-  <ellipse cx="60" cy="70" rx="10" ry="20" fill="#1a1a1a"/>
-  <ellipse cx="140" cy="70" rx="10" ry="20" fill="#1a1a1a"/>
-  <!-- Hair curls on sides -->
-  <ellipse cx="55" cy="80" rx="7" ry="12" fill="#1a1a1a"/>
-  <ellipse cx="145" cy="80" rx="7" ry="12" fill="#1a1a1a"/>
+  <!-- Face -->
+  <circle cx="100" cy="90" r="38" fill="url(#skin)"/>
 
-  <!-- Glasses frames -->
-  <!-- Left lens -->
-  <rect x="68" y="78" width="26" height="20" rx="4" ry="4" fill="none" stroke="#333" stroke-width="2.5"/>
-  <!-- Right lens -->
-  <rect x="106" y="78" width="26" height="20" rx="4" ry="4" fill="none" stroke="#333" stroke-width="2.5"/>
-  <!-- Bridge -->
-  <line x1="94" y1="88" x2="106" y2="88" stroke="#333" stroke-width="2.5"/>
-  <!-- Temples -->
-  <line x1="68" y1="83" x2="58" y2="80" stroke="#333" stroke-width="2"/>
-  <line x1="132" y1="83" x2="142" y2="80" stroke="#333" stroke-width="2"/>
-  <!-- Lens tint -->
-  <rect x="69" y="79" width="24" height="18" rx="3" ry="3" fill="rgba(0,0,0,0.15)"/>
-  <rect x="107" y="79" width="24" height="18" rx="3" ry="3" fill="rgba(0,0,0,0.15)"/>
+  <!-- Face paint - white dots and stripes -->
+  <circle cx="75" cy="80" r="3" fill="white" opacity="0.9"/>
+  <circle cx="125" cy="80" r="3" fill="white" opacity="0.9"/>
+  <circle cx="70" cy="90" r="2" fill="white" opacity="0.8"/>
+  <circle cx="130" cy="90" r="2" fill="white" opacity="0.8"/>
+  <line x1="80" y1="100" x2="75" y2="112" stroke="white" stroke-width="2" opacity="0.8"/>
+  <line x1="120" y1="100" x2="125" y2="112" stroke="white" stroke-width="2" opacity="0.8"/>
+  <!-- Red face paint stripes on cheeks -->
+  <line x1="68" y1="85" x2="65" y2="100" stroke="#cc2200" stroke-width="2.5" opacity="0.8"/>
+  <line x1="72" y1="86" x2="69" y2="101" stroke="#cc2200" stroke-width="2" opacity="0.7"/>
+  <line x1="132" y1="85" x2="135" y2="100" stroke="#cc2200" stroke-width="2.5" opacity="0.8"/>
+  <line x1="128" y1="86" x2="131" y2="101" stroke="#cc2200" stroke-width="2" opacity="0.7"/>
 
-  <!-- Eyes behind glasses -->
-  <ellipse cx="81" cy="88" rx="4" ry="3.5" fill="white"/>
-  <circle cx="82" cy="88" r="2" fill="#2a1500"/>
-  <ellipse cx="119" cy="88" rx="4" ry="3.5" fill="white"/>
-  <circle cx="120" cy="88" r="2" fill="#2a1500"/>
+  <!-- Eyes - wide and expressive -->
+  <ellipse cx="86" cy="85" rx="7" ry="6" fill="white"/>
+  <circle cx="87" cy="85" r="3.5" fill="#2a1500"/>
+  <circle cx="88" cy="84" r="1.5" fill="white"/>
+  <ellipse cx="114" cy="85" rx="7" ry="6" fill="white"/>
+  <circle cx="115" cy="85" r="3.5" fill="#2a1500"/>
+  <circle cx="116" cy="84" r="1.5" fill="white"/>
 
-  <!-- Eyebrows -->
-  <path d="M68,76 Q81,70 94,76" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
-  <path d="M106,76 Q119,70 132,76" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+  <!-- Eyebrows - thick and expressive -->
+  <path d="M76,77 Q86,72 96,77" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M104,77 Q114,72 124,77" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
 
-  <!-- Nose -->
-  <path d="M97,92 Q95,102 90,105 Q100,108 110,105 Q105,102 103,92" fill="#7A5C10" opacity="0.5"/>
+  <!-- Wide nose -->
+  <path d="M95,90 Q93,98 88,102 Q100,105 112,102 Q107,98 105,90" fill="#7A5C10" opacity="0.4"/>
 
-  <!-- Big Eddie Murphy smile -->
-  <path d="M80,110 Q100,128 120,110" fill="white" stroke="#5a4410" stroke-width="1"/>
-  <!-- Upper lip line -->
-  <path d="M80,110 Q100,106 120,110" fill="#6B4F12" stroke="none"/>
-  <!-- Mustache -->
-  <path d="M82,107 Q92,112 100,108 Q108,112 118,107 Q108,104 100,106 Q92,104 82,107" fill="#1a1a1a"/>
+  <!-- Big goofy smile -->
+  <path d="M78,105 Q100,125 122,105" fill="white" stroke="#5a4410" stroke-width="1"/>
+  <path d="M78,105 Q100,100 122,105" fill="#6B4F12" stroke="none"/>
 
-  <!-- "U" letter on the jacket like a monogram -->
-  <text x="100" y="195" font-family="Georgia, serif" font-size="18" font-weight="bold" fill="#ffcc00" text-anchor="middle" opacity="0.9">U</text>
+  <!-- Body - animal skin outfit -->
+  <ellipse cx="100" cy="175" rx="55" ry="40" fill="#8B6914"/>
+  <ellipse cx="100" cy="175" rx="55" ry="40" fill="none" stroke="#5a4410" stroke-width="1"/>
+  <!-- Leopard spots on outfit -->
+  <circle cx="80" cy="165" r="5" fill="#5a4410" opacity="0.6"/>
+  <circle cx="120" cy="160" r="4" fill="#5a4410" opacity="0.6"/>
+  <circle cx="95" cy="175" r="5" fill="#5a4410" opacity="0.5"/>
+  <circle cx="110" cy="180" r="4" fill="#5a4410" opacity="0.6"/>
+  <circle cx="75" cy="180" r="3" fill="#5a4410" opacity="0.5"/>
+  <circle cx="130" cy="175" r="4" fill="#5a4410" opacity="0.5"/>
 
-  <!-- Subtle gold chain -->
-  <path d="M75,145 Q100,155 125,145" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.7"/>
-  <circle cx="100" cy="155" r="3" fill="#FFD700" opacity="0.7"/>
+  <!-- Bone necklace -->
+  <path d="M70,135 Q100,145 130,135" fill="none" stroke="#f5f0e0" stroke-width="2"/>
+  <ellipse cx="100" cy="143" rx="6" ry="4" fill="#f5f0e0"/>
+  <ellipse cx="88" cy="141" rx="4" ry="3" fill="#f5f0e0"/>
+  <ellipse cx="112" cy="141" rx="4" ry="3" fill="#f5f0e0"/>
 </svg>
