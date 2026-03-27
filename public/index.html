@@ -51,8 +51,46 @@
       font-style: italic;
     }
 
-    .status-badge {
+    .header-right {
       margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    .user-info img {
+      width: 28px !important;
+      height: 28px !important;
+      border-radius: 50%;
+      border: 2px solid #555 !important;
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 1px solid #555;
+      color: #999;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .logout-btn:hover {
+      border-color: #ff4444;
+      color: #ff4444;
+    }
+
+    .status-badge {
       background: #ff4444;
       color: white;
       padding: 4px 12px;
@@ -261,7 +299,11 @@
       <h1>Umfufu</h1>
       <p>Your chaotic travel & scheduling assistant</p>
     </div>
-    <div class="status-badge">Online & Unhinged</div>
+    <div class="header-right">
+      <div class="user-info" id="user-info"></div>
+      <a href="/auth/logout" class="logout-btn">Logout</a>
+      <div class="status-badge">Online & Unhinged</div>
+    </div>
   </div>
 
   <div class="chat-container" id="chat">
@@ -289,8 +331,17 @@
     const chatEl = document.getElementById('chat');
     const inputEl = document.getElementById('input');
     const sendBtn = document.getElementById('send');
-    const sessionId = 'session_' + Math.random().toString(36).slice(2);
     let welcomeVisible = true;
+
+    // Load current user info
+    fetch('/api/me').then(r => r.json()).then(user => {
+      const el = document.getElementById('user-info');
+      if (user.picture) {
+        el.innerHTML = `<img src="${user.picture}" alt="">${user.name || user.email}`;
+      } else {
+        el.textContent = user.email;
+      }
+    }).catch(() => { window.location.href = '/login'; });
 
     inputEl.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -359,7 +410,7 @@
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, sessionId }),
+          body: JSON.stringify({ message: text }),
         });
 
         hideTyping();

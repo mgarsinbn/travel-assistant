@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+
 module.exports = {
   anthropic: {
     apiKey: process.env.ANTHROPIC_API_KEY,
@@ -8,14 +10,21 @@ module.exports = {
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    redirectUri: 'http://localhost:3333/oauth/callback',
+    // Auth redirect for web login
+    loginRedirectUri: `${BASE_URL}/auth/google/callback`,
+    // Calendar OAuth redirect (separate flow)
+    calendarRedirectUri: 'http://localhost:3333/oauth/callback',
     scopes: [
       'https://www.googleapis.com/auth/calendar',
       'https://www.googleapis.com/auth/calendar.events',
     ],
   },
+  session: {
+    secret: process.env.SESSION_SECRET || 'umfufu-' + require('crypto').randomBytes(16).toString('hex'),
+  },
   users: {
-    emails: (process.env.USER_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean),
+    // Only these emails can access Umfufu
+    allowedEmails: (process.env.ALLOWED_EMAILS || process.env.USER_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean),
   },
   delta: {
     username: process.env.DELTA_USERNAME,
@@ -25,4 +34,5 @@ module.exports = {
     username: process.env.MARRIOTT_USERNAME,
     password: process.env.MARRIOTT_PASSWORD,
   },
+  baseUrl: BASE_URL,
 };
