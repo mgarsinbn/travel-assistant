@@ -138,6 +138,7 @@ app.post('/api/chat', async (req, res) => {
               content: JSON.stringify(result),
             });
           } catch (err) {
+            console.error(`Tool error [${block.name}]:`, err.message, err.response?.data || '');
             toolResults.push({
               type: 'tool_result',
               tool_use_id: block.id,
