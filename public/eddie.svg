@@ -1,5 +1,89 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-  <rect width="200" height="200" fill="#8b0000" rx="100"/>
-  <text x="100" y="90" font-family="Arial" font-size="60" fill="white" text-anchor="middle">U</text>
-  <text x="100" y="140" font-family="Arial" font-size="24" fill="#ffcccc" text-anchor="middle">UMFUFU</text>
+  <!-- Background: rich red leather gradient (Delirious vibes) -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#cc0000"/>
+      <stop offset="100%" stop-color="#660000"/>
+    </radialGradient>
+    <radialGradient id="skin" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#8B6914"/>
+      <stop offset="100%" stop-color="#6B4F12"/>
+    </radialGradient>
+    <linearGradient id="jacket" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dd1111"/>
+      <stop offset="50%" stop-color="#aa0000"/>
+      <stop offset="100%" stop-color="#880000"/>
+    </linearGradient>
+    <!-- Leather shine effect -->
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
+      <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.08)"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Circular background -->
+  <circle cx="100" cy="100" r="100" fill="url(#bg)"/>
+
+  <!-- Red leather jacket / outfit (shoulders and collar) -->
+  <ellipse cx="100" cy="185" rx="75" ry="55" fill="url(#jacket)"/>
+  <!-- Leather shine on jacket -->
+  <ellipse cx="100" cy="185" rx="75" ry="55" fill="url(#shine)"/>
+  <!-- Jacket collar V-neck -->
+  <polygon points="80,145 100,175 120,145" fill="#1a1a1a" opacity="0.9"/>
+  <!-- Collar lapels -->
+  <polygon points="65,140 80,145 85,165 60,155" fill="#cc1111" stroke="#990000" stroke-width="0.5"/>
+  <polygon points="135,140 120,145 115,165 140,155" fill="#cc1111" stroke="#990000" stroke-width="0.5"/>
+
+  <!-- Head / face circle -->
+  <circle cx="100" cy="85" r="45" fill="url(#skin)"/>
+
+  <!-- Hair (jheri curl era - wavy top) -->
+  <ellipse cx="100" cy="52" rx="42" ry="22" fill="#1a1a1a"/>
+  <ellipse cx="60" cy="70" rx="10" ry="20" fill="#1a1a1a"/>
+  <ellipse cx="140" cy="70" rx="10" ry="20" fill="#1a1a1a"/>
+  <!-- Hair curls on sides -->
+  <ellipse cx="55" cy="80" rx="7" ry="12" fill="#1a1a1a"/>
+  <ellipse cx="145" cy="80" rx="7" ry="12" fill="#1a1a1a"/>
+
+  <!-- Glasses frames -->
+  <!-- Left lens -->
+  <rect x="68" y="78" width="26" height="20" rx="4" ry="4" fill="none" stroke="#333" stroke-width="2.5"/>
+  <!-- Right lens -->
+  <rect x="106" y="78" width="26" height="20" rx="4" ry="4" fill="none" stroke="#333" stroke-width="2.5"/>
+  <!-- Bridge -->
+  <line x1="94" y1="88" x2="106" y2="88" stroke="#333" stroke-width="2.5"/>
+  <!-- Temples -->
+  <line x1="68" y1="83" x2="58" y2="80" stroke="#333" stroke-width="2"/>
+  <line x1="132" y1="83" x2="142" y2="80" stroke="#333" stroke-width="2"/>
+  <!-- Lens tint -->
+  <rect x="69" y="79" width="24" height="18" rx="3" ry="3" fill="rgba(0,0,0,0.15)"/>
+  <rect x="107" y="79" width="24" height="18" rx="3" ry="3" fill="rgba(0,0,0,0.15)"/>
+
+  <!-- Eyes behind glasses -->
+  <ellipse cx="81" cy="88" rx="4" ry="3.5" fill="white"/>
+  <circle cx="82" cy="88" r="2" fill="#2a1500"/>
+  <ellipse cx="119" cy="88" rx="4" ry="3.5" fill="white"/>
+  <circle cx="120" cy="88" r="2" fill="#2a1500"/>
+
+  <!-- Eyebrows -->
+  <path d="M68,76 Q81,70 94,76" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M106,76 Q119,70 132,76" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Nose -->
+  <path d="M97,92 Q95,102 90,105 Q100,108 110,105 Q105,102 103,92" fill="#7A5C10" opacity="0.5"/>
+
+  <!-- Big Eddie Murphy smile -->
+  <path d="M80,110 Q100,128 120,110" fill="white" stroke="#5a4410" stroke-width="1"/>
+  <!-- Upper lip line -->
+  <path d="M80,110 Q100,106 120,110" fill="#6B4F12" stroke="none"/>
+  <!-- Mustache -->
+  <path d="M82,107 Q92,112 100,108 Q108,112 118,107 Q108,104 100,106 Q92,104 82,107" fill="#1a1a1a"/>
+
+  <!-- "U" letter on the jacket like a monogram -->
+  <text x="100" y="195" font-family="Georgia, serif" font-size="18" font-weight="bold" fill="#ffcc00" text-anchor="middle" opacity="0.9">U</text>
+
+  <!-- Subtle gold chain -->
+  <path d="M75,145 Q100,155 125,145" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.7"/>
+  <circle cx="100" cy="155" r="3" fill="#FFD700" opacity="0.7"/>
 </svg>
