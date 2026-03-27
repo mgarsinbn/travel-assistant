@@ -12,8 +12,8 @@ module.exports = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     // Auth redirect for web login
     loginRedirectUri: `${BASE_URL}/auth/google/callback`,
-    // Calendar OAuth redirect (separate flow)
-    calendarRedirectUri: 'http://localhost:3333/oauth/callback',
+    // Calendar OAuth redirect (same server)
+    calendarRedirectUri: `${BASE_URL}/auth/calendar/callback`,
     scopes: [
       'https://www.googleapis.com/auth/calendar',
       'https://www.googleapis.com/auth/calendar.events',

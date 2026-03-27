@@ -6,6 +6,7 @@ const { SYSTEM_PROMPT } = require('./umfufu');
 const tools = require('./tools/definitions');
 const { handleToolCall } = require('./tools/handler');
 const auth = require('./auth');
+const calendar = require('./services/calendar');
 
 const app = express();
 app.use(express.json());
@@ -49,6 +50,31 @@ app.get('/auth/google/callback', async (req, res) => {
   } catch (err) {
     console.error('Auth callback error:', err);
     res.status(500).send('Authentication failed');
+  }
+});
+
+// Calendar OAuth callback (user clicks authorize link from Umfufu)
+app.get('/auth/calendar/callback', async (req, res) => {
+  const code = req.query.code;
+  const email = req.query.state; // email passed through state param
+  if (!code || !email) return res.status(400).send('Missing auth code or email');
+
+  try {
+    const tokens = await calendar.handleAuthCallback(code);
+    calendar.saveTokens(email, tokens);
+    res.send(`
+      <html><body style="background:#0a0a0a;color:#e0e0e0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center">
+        <div>
+          <h1 style="color:#ff4444;font-size:48px">UMFUFU HAS ACCESS</h1>
+          <p style="font-size:18px;margin-top:16px">Calendar connected for <strong>${email}</strong></p>
+          <p style="color:#888;margin-top:12px">Go back to Umfufu and ask her anything about your calendar.</p>
+          <a href="/" style="color:#ff4444;margin-top:20px;display:inline-block;font-size:16px">Back to Umfufu</a>
+        </div>
+      </body></html>
+    `);
+  } catch (err) {
+    console.error('Calendar auth error:', err);
+    res.status(500).send('Calendar authorization failed: ' + err.message);
   }
 });
 

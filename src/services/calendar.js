@@ -1,91 +1,73 @@
 const { google } = require('googleapis');
-const fs = require('fs');
-const path = require('path');
-const http = require('http');
 const config = require('../config');
 
-const TOKEN_DIR = path.join(__dirname, '../../tokens');
+// In-memory token store (email -> tokens)
+// In production, you'd want to persist these to a database or S3
+const tokenStore = new Map();
 
-function getTokenPath(email) {
-  const safe = email.replace(/[^a-z0-9]/gi, '_');
-  return path.join(TOKEN_DIR, `${safe}.json`);
-}
-
-function createOAuth2Client() {
+function createOAuth2Client(redirectUri) {
   return new google.auth.OAuth2(
     config.google.clientId,
     config.google.clientSecret,
-    config.google.redirectUri
+    redirectUri || `${config.baseUrl}/auth/calendar/callback`
   );
 }
 
-async function getAuthenticatedClient(email) {
-  const tokenPath = getTokenPath(email);
-  const oauth2Client = createOAuth2Client();
-
-  if (fs.existsSync(tokenPath)) {
-    const tokens = JSON.parse(fs.readFileSync(tokenPath, 'utf-8'));
-    oauth2Client.setCredentials(tokens);
-
-    // Refresh if expired
-    if (tokens.expiry_date && tokens.expiry_date < Date.now()) {
-      const { credentials } = await oauth2Client.refreshAccessToken();
-      fs.writeFileSync(tokenPath, JSON.stringify(credentials, null, 2));
-      oauth2Client.setCredentials(credentials);
-    }
-
-    return oauth2Client;
-  }
-
-  return null; // Not authenticated yet
-}
-
-async function authorizeUser(email) {
-  const oauth2Client = createOAuth2Client();
-  const authUrl = oauth2Client.generateAuthUrl({
+function getAuthUrl(email) {
+  const client = createOAuth2Client();
+  return client.generateAuthUrl({
     access_type: 'offline',
     scope: config.google.scopes,
     login_hint: email,
     prompt: 'consent',
+    state: email, // pass email through state param
   });
+}
 
-  return new Promise((resolve, reject) => {
-    const server = http.createServer(async (req, res) => {
-      if (req.url.startsWith('/oauth/callback')) {
-        const url = new URL(req.url, 'http://localhost:3333');
-        const code = url.searchParams.get('code');
+async function handleAuthCallback(code) {
+  const client = createOAuth2Client();
+  const { tokens } = await client.getToken(code);
+  return tokens;
+}
 
-        try {
-          const { tokens } = await oauth2Client.getToken(code);
-          oauth2Client.setCredentials(tokens);
+function saveTokens(email, tokens) {
+  tokenStore.set(email.toLowerCase(), tokens);
+}
 
-          if (!fs.existsSync(TOKEN_DIR)) {
-            fs.mkdirSync(TOKEN_DIR, { recursive: true });
-          }
-          fs.writeFileSync(getTokenPath(email), JSON.stringify(tokens, null, 2));
+function getTokens(email) {
+  return tokenStore.get(email.toLowerCase());
+}
 
-          res.writeHead(200, { 'Content-Type': 'text/html' });
-          res.end('<h1>Umfufu has your calendar access now! You can close this tab.</h1>');
-          server.close();
-          resolve(oauth2Client);
-        } catch (err) {
-          res.writeHead(500);
-          res.end('Auth failed');
-          server.close();
-          reject(err);
-        }
-      }
-    });
+async function getAuthenticatedClient(email) {
+  const tokens = getTokens(email);
+  if (!tokens) return null;
 
-    server.listen(3333, () => {
-      console.log(`\nOpen this URL to authorize ${email}:\n${authUrl}\n`);
-    });
-  });
+  const client = createOAuth2Client();
+  client.setCredentials(tokens);
+
+  // Refresh if expired
+  if (tokens.expiry_date && tokens.expiry_date < Date.now()) {
+    try {
+      const { credentials } = await client.refreshAccessToken();
+      saveTokens(email, credentials);
+      client.setCredentials(credentials);
+    } catch (err) {
+      // Token refresh failed — user needs to re-auth
+      tokenStore.delete(email.toLowerCase());
+      return null;
+    }
+  }
+
+  return client;
+}
+
+function isAuthorized(email) {
+  return tokenStore.has(email.toLowerCase());
 }
 
 async function listEvents(email, timeMin, timeMax) {
   const auth = await getAuthenticatedClient(email);
-  if (!auth) throw new Error(`${email} not authenticated. Run authorize first.`);
+  if (!auth) throw new Error(`Calendar not connected for ${email}. Please authorize first by clicking the link Umfufu provides.`);
 
   const calendar = google.calendar({ version: 'v3', auth });
   const res = await calendar.events.list({
@@ -101,7 +83,7 @@ async function listEvents(email, timeMin, timeMax) {
 
 async function createEvent(email, { summary, description, startTime, endTime, attendees }) {
   const auth = await getAuthenticatedClient(email);
-  if (!auth) throw new Error(`${email} not authenticated. Run authorize first.`);
+  if (!auth) throw new Error(`Calendar not connected for ${email}. Please authorize first.`);
 
   const calendar = google.calendar({ version: 'v3', auth });
   const event = {
@@ -126,7 +108,6 @@ async function createEvent(email, { summary, description, startTime, endTime, at
 }
 
 async function findFreeSlots(emails, date, durationMinutes = 30) {
-  // Check all users' calendars for a given date
   const allEvents = [];
   for (const email of emails) {
     try {
@@ -141,7 +122,6 @@ async function findFreeSlots(emails, date, durationMinutes = 30) {
     }
   }
 
-  // Build busy intervals
   const busy = allEvents
     .filter(e => e.start?.dateTime && e.end?.dateTime)
     .map(e => ({
@@ -150,7 +130,6 @@ async function findFreeSlots(emails, date, durationMinutes = 30) {
     }))
     .sort((a, b) => a.start - b.start);
 
-  // Find free slots between 9am-6pm
   const dayStart = new Date(date);
   dayStart.setHours(9, 0, 0, 0);
   const dayEnd = new Date(date);
@@ -180,4 +159,13 @@ async function findFreeSlots(emails, date, durationMinutes = 30) {
   return freeSlots;
 }
 
-module.exports = { authorizeUser, listEvents, createEvent, findFreeSlots, getAuthenticatedClient };
+module.exports = {
+  getAuthUrl,
+  handleAuthCallback,
+  saveTokens,
+  isAuthorized,
+  getAuthenticatedClient,
+  listEvents,
+  createEvent,
+  findFreeSlots,
+};

@@ -4,9 +4,20 @@ const marriott = require('../services/marriott');
 
 async function handleToolCall(name, input) {
   switch (name) {
-    case 'authorize_calendar':
-      await calendar.authorizeUser(input.email);
-      return { success: true, message: `Calendar access authorized for ${input.email}` };
+    case 'authorize_calendar': {
+      // Check if already authorized
+      if (calendar.isAuthorized(input.email)) {
+        return { success: true, message: `Calendar already connected for ${input.email}` };
+      }
+      // Return an auth URL for the user to click
+      const authUrl = calendar.getAuthUrl(input.email);
+      return {
+        success: true,
+        needs_user_action: true,
+        message: `Calendar not yet connected for ${input.email}. The user needs to click this link to authorize: ${authUrl}`,
+        auth_url: authUrl,
+      };
+    }
 
     case 'list_calendar_events': {
       const events = await calendar.listEvents(input.email, input.start_date, input.end_date);
