@@ -2,7 +2,7 @@ const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
 const path = require('path');
 const config = require('./config');
-const { SYSTEM_PROMPT } = require('./umfufu');
+const { getSystemPrompt } = require('./umfufu');
 const tools = require('./tools/definitions');
 const { handleToolCall } = require('./tools/handler');
 const auth = require('./auth');
@@ -118,7 +118,7 @@ app.post('/api/chat', async (req, res) => {
     let response = await client.messages.create({
       model: config.anthropic.model,
       max_tokens: 4096,
-      system: SYSTEM_PROMPT,
+      system: getSystemPrompt(req.user.email),
       tools,
       messages: session.messages,
     });
@@ -153,7 +153,7 @@ app.post('/api/chat', async (req, res) => {
       response = await client.messages.create({
         model: config.anthropic.model,
         max_tokens: 4096,
-        system: SYSTEM_PROMPT,
+        system: getSystemPrompt(req.user.email),
         tools,
         messages: session.messages,
       });

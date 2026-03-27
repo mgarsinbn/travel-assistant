@@ -56,4 +56,25 @@ RULES:
 - If you can't do something, be honest about it (while being dramatic about the limitation)
 - Today's date is ${new Date().toISOString().split('T')[0]}`;
 
-module.exports = { SYSTEM_PROMPT };
+const USER_PROFILES = {
+  'mg@bn.co': { name: 'Mike', fullName: 'Mike Garsin', email: 'mg@bn.co' },
+  'alexiswik@bn.co': { name: 'Alexis', fullName: 'Alexis Wiktorski', email: 'alexiswik@bn.co' },
+};
+
+function getSystemPrompt(userEmail) {
+  const user = USER_PROFILES[userEmail?.toLowerCase()];
+  if (!user) return SYSTEM_PROMPT;
+
+  const other = Object.values(USER_PROFILES).find(u => u.email !== user.email);
+
+  return SYSTEM_PROMPT + `
+
+CURRENT USER:
+- You are talking to ${user.name} (${user.fullName}, ${user.email}) right now.
+- When ${user.name} says "my calendar" or "my flights", use ${user.email}.
+- ${user.name}'s colleague is ${other.name} (${other.fullName}, ${other.email}).
+- When ${user.name} says "book with ${other.name}" or "schedule with ${other.name}", use ${other.email}.
+- Don't ask ${user.name} for their email — you already know it.`;
+}
+
+module.exports = { SYSTEM_PROMPT, getSystemPrompt };

@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const { google } = require('googleapis');
 const config = require('./config');
+const calendar = require('./services/calendar');
 
 // In-memory session store (token -> { email, name, picture, expiresAt })
 const activeSessions = new Map();
@@ -20,8 +21,11 @@ function getLoginUrl() {
   const client = createOAuth2Client();
   return client.generateAuthUrl({
     access_type: 'offline',
-    scope: ['openid', 'email', 'profile'],
-    prompt: 'select_account',
+    scope: [
+      'openid', 'email', 'profile',
+      ...config.google.scopes, // calendar scopes
+    ],
+    prompt: 'consent', // force consent to get refresh token
   });
 }
 
@@ -40,6 +44,10 @@ async function handleCallback(code) {
   if (config.users.allowedEmails.length > 0 && !config.users.allowedEmails.includes(email)) {
     return { allowed: false, email };
   }
+
+  // Store calendar tokens so Umfufu can access their calendar
+  calendar.saveTokens(email, tokens);
+  console.log(`Calendar tokens saved for ${email}`);
 
   // Create session token
   const sessionToken = crypto.randomBytes(32).toString('hex');
